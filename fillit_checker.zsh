@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-if [[ $1 -ne "-v" && $1 -ne "-i" ]] || [[ $2 == "" || $3 == "" ]]; then
+if [[ $1 -ne "-v" && $1 -ne "-i" ]] || [[ $2 == "" || $3 == "" ]] || ! $(ls $2 $3 1>/dev/null); then
 	echo "Usage $0 (-v|-i) <1st_fillit_folder> <2nd_fillit_folder>"
 	echo
 	echo "-v:\tlaunch main valid test"
@@ -10,6 +10,8 @@ fi
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+YELLOW='\e[93m'
+CYAN='\e[96m'
 BLUE='\033[1;34m'
 RESET='\033[0m'
 
@@ -18,7 +20,7 @@ TDIR=.fillit_tests/
 
 FST=$2
 SCD=$3
-LIMITS=(1 2 10)
+LIMITS=(1 1 20)
 
 
 rm -rf $TDIR
@@ -37,33 +39,46 @@ done
 
 printf $BLUE
 while [[ $(pgrep fillit) ]]; do
-	echo "Waiting... for $(pgrep fillit | wc -l | sed -e 's/ //g') proccesses"; sleep 5
 	cu=($(top -l 1 -i 1 -n 0 | awk '/CPU usage:/ {printf "%s %s\n",  $3, $5;}'))
-	if [[ $(echo ${cu[1]/\%/} + ${cu[2]/\%/} | bc) > 99 ]]; then
+	CPU=$(echo ${cu[1]/\%/} + ${cu[2]/\%/} | bc)
+	echo "Waiting... for $(pgrep fillit | wc -l | sed -e 's/ //g') proccesses. CPU usage: $CPU"; sleep 5
+	if (( $CPU >= 100.7 )); then
 		kill -9 $(pgrep fillit)
 	fi
 done
 
-for i in {1..${LIMITS[1]}}; do
-	for j in {${LIMITS[2]}..${LIMITS[3]}}; do
-		f="${i}_${j}.out"
-		if [[ $1 == "-v" ]]; then
-			if [[ "$(diff $TDIR/fst_${f} $TDIR/scd_${f})" ]]; then
-				printf $RED; echo "Error occured with files: $TDIR/fst_${f} $TDIR/scd_${f}"
-				printf $RESET; echo DUMP:
-				echo "$TDIR/fst_${f}:"; cat $TDIR/fst_${f}
+printf $YELLOW
+ERRS=0
+if [[ $1 == "-v" ]]; then
+	echo "Checking with valid maps:"
+	for i in {1..${LIMITS[1]}}; do
+		for j in {${LIMITS[2]}..${LIMITS[3]}}; do
+			f="${i}_${j}"
+			if [[ "$(diff $TDIR/fst_${f}.out $TDIR/scd_${f}.out)" ]]; then
+				printf $RED; echo "Error occured with files: $TDIR/fst_${f}.out $TDIR/scd_${f}.out"
+				printf $RESET;
+				echo "DUMP:\n$TDIR/fst_${f}.out:"; cat $TDIR/fst_${f}.out
 				echo "\n--------------------\n"
-				echo "$TDIR/scd_${f}:"; cat $TDIR/scd_${f}
-				exit 2;
+				echo "$TDIR/scd_${f}.out:"; cat $TDIR/scd_${f}.out
+				let ERRS++;
+			else
+				printf $GREEN; echo "Valid test $f passed successfully!"
 			fi
-		else
-			if (( $(wc -l < $TDIR/fst_${f}) != $(wc -l < $TDIR/scd_${f}) )); then
-				printf $RED; echo "Some error occured with \"incorrect test\" output comparison"
-				printf $RED; echo "Error occured with files: $TDIR/fst_${f} $TDIR/scd_${f} OR $TDIR/fst_${f}.err $TDIR/scd_${f}.err"
-				exit 3;
-			fi
-		fi
+		done
 	done
-done
+else
+	echo "Checking with invalid maps:"
+	for i in {1..${LIMITS[1]}}; do
+		for j in {${LIMITS[2]}..${LIMITS[3]}}; do
+			f="${i}_${j}"
+			if (( $(wc -l < $TDIR/fst_${f}.out) != $(wc -l < $TDIR/scd_${f}.out) )); then
+				printf $RED; echo "Error occured with files: $TDIR/fst_${f}.out $TDIR/scd_${f}.out OR $TDIR/fst_${f}.err $TDIR/scd_${f}.err"
+				let ERRS++;
+			else
+				printf $GREEN; echo "Invalid test $f passed successfully!"
+			fi
+		done
+	done
+fi
 
-printf $GREEN; echo $(echo "${LIMITS[1]} * (${LIMITS[3]} - ${LIMITS[2]} + 1)" | bc) "tests passed successfully"
+printf $CYAN; echo; echo $(echo "${LIMITS[1]} * (${LIMITS[3]} - ${LIMITS[2]} + 1) - $ERRS" | bc) "tests passed successfully"
