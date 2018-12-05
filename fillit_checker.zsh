@@ -47,13 +47,21 @@ done
 for i in {1..${LIMITS[1]}}; do
 	for j in {${LIMITS[2]}..${LIMITS[3]}}; do
 		f="${i}_${j}.out"
-		if [[ "$(diff $TDIR/fst_${f} $TDIR/scd_${f})" ]]; then
-			printf $RED; echo "Error occured with files: $TDIR/fst_${f} $TDIR/scd_${f}"
-			printf $RESET; echo DUMP:
-			echo "$TDIR/fst_${f}:"; cat $TDIR/fst_${f}
-			echo "\n--------------------\n"
-			echo "$TDIR/scd_${f}:"; cat $TDIR/scd_${f}
-			exit 2;
+		if [[ $1 == "-v" ]]; then
+			if [[ "$(diff $TDIR/fst_${f} $TDIR/scd_${f})" ]]; then
+				printf $RED; echo "Error occured with files: $TDIR/fst_${f} $TDIR/scd_${f}"
+				printf $RESET; echo DUMP:
+				echo "$TDIR/fst_${f}:"; cat $TDIR/fst_${f}
+				echo "\n--------------------\n"
+				echo "$TDIR/scd_${f}:"; cat $TDIR/scd_${f}
+				exit 2;
+			fi
+		else
+			if (( $(wc -l < $TDIR/fst_${f}) != $(wc -l < $TDIR/scd_${f}) )); then
+				printf $RED; echo "Some error occured with \"incorrect test\" output comparison"
+				printf $RED; echo "Error occured with files: $TDIR/fst_${f} $TDIR/scd_${f} OR $TDIR/fst_${f}.err $TDIR/scd_${f}.err"
+				exit 3;
+			fi
 		fi
 	done
 done

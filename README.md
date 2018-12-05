@@ -3,7 +3,9 @@
 
 ## ACHTUNG
 
-### ./fillit_checker just compares output of two fillit executables, keep this in mind!!!
+./fillit_checker just compares output of two fillit executables, keep it in mind!!!
+You can always get more information about checker if you take look on its source code in *fillit_checker.zsh* file<br />
+As etalon of the fillit you can always use akorunsk's fillit itself: https://github.com/akorunska/fillit
 
 ## How to install ?
 
@@ -13,10 +15,10 @@
 
 	chmod +x fillit_checker.zsh
 
-Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder> <2nd_fillit_folder><br />
-**-v**: launch main valid test<br />
-**-i**: launch incorrect test<br />
+	Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder> <2nd_fillit_folder><br />
+	**-v**: launch main valid test<br />
+	**-i**: launch incorrect test<br />
 
-## Examples
+## Special thanks to @hqro for the beautiful tetraminos-generator
 
 
