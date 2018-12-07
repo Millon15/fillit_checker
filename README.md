@@ -5,7 +5,7 @@
 
 ./fillit_checker just compares output of two fillit executables, keep it in mind!!!
 You can always get more information about checker if you take look on its source code in *fillit_checker.zsh* file<br />
-As etalon of the fillit you can always use akorunsk's fillit itself: https://github.com/akorunska/fillit
+As etalon of the fillit you can always use @akondaur with @osyrotiu fillit, which placed in project folder as etalon_fillit
 
 ## How to install ?
 
@@ -19,6 +19,4 @@ As etalon of the fillit you can always use akorunsk's fillit itself: https://git
 	**-v**: launch main valid test<br />
 	**-i**: launch incorrect test<br />
 
-## Special thanks to @hqro for the beautiful tetraminos-generator
-
-
+## Special thanks to @hqro for the beautiful tetraminos-generator and to @akondaur:@osyrotiu for perfect etalon fillit

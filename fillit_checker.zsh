@@ -12,6 +12,7 @@ GREEN='\e[0;32m'
 RED='\e[0;31m'
 YELLOW='\e[93m'
 CYAN='\e[96m'
+MAG='\e[95m'
 BOLD='\e[1m'
 BLUE='\e[1;34m'
 RESET='\e[0m'
@@ -21,7 +22,7 @@ TDIR=.fillit_tests/
 
 FST=$2
 SCD=$3
-LIMITS=(5 1 2)
+LIMITS=(1 1 26)
 
 
 rm -rf $TDIR
@@ -38,6 +39,7 @@ for i in {1..${LIMITS[1]}}; do
 	done
 done
 
+echo "${MAG}If your computer will be close to blow himself up just ^C and type in your shell the command below\n>>> kill -9 \$(pgrep fillit)"
 printf $BLUE
 while [[ $(pgrep fillit) ]]; do
 	cu=($(top -l 1 -i 1 -n 0 | awk '/CPU usage:/ {printf "%s %s\n",  $3, $5;}'))
