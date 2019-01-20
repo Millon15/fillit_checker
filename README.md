@@ -15,8 +15,8 @@ As etalon of the fillit you can always use @akondaur with @osyrotiu fillit, whic
 
 	chmod +x fillit_checker.zsh
 
-	Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder> <2nd_fillit_folder><br />
-	**-v**: launch main valid test<br />
-	**-i**: launch incorrect test<br />
+	Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder> <2nd_fillit_folder>
+	-v: launch main valid test
+	-i: launch incorrect test
 
 ## Special thanks to @hqro for the beautiful tetraminos-generator and to @akondaur:@osyrotiu for perfect etalon fillit
