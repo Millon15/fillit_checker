@@ -10,13 +10,16 @@ As etalon of the fillit you can always use @akondaur with @osyrotiu fillit, whic
 ## How to install ?
 
 	git clone https://github.com/millon15/fillit_checker
+	chmod +x fillit_checker.zsh
 
 ## How to use ?
 
-	chmod +x fillit_checker.zsh
-
-	Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder> <2nd_fillit_folder>
+	./fillit_checker.zsh -v ../path/to/your/fillit/folder/of/executable etalon_fillit
+<br /><br />
+	Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder_or_exec> <2nd_fillit_folder_or_exec>
 	-v: launch main valid test
 	-i: launch incorrect test
+
+NOTE: all test maps with your fillit's output(.err files for 2nd file descriptor and .out for 1st) placed with ❤️ in .fillit_tests folder"
 
 ## Special thanks to @hqro for the beautiful tetraminos-generator and to @akondaur:@osyrotiu for perfect etalon fillit
