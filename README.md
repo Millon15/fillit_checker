@@ -14,11 +14,18 @@ As etalon of the fillit you can always use @akondaur with @osyrotiu fillit, whic
 
 ## How to use ?
 
-	./fillit_checker.zsh -v ../path/to/your/fillit/folder/of/executable etalon_fillit
-<br /><br />
-	Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder_or_exec> <2nd_fillit_folder_or_exec>
-	-v: launch main valid test
-	-i: launch incorrect test
+	./fillit_checker.zsh -v ../my_fillit etalon_fillit 1 12
+
+```bash
+Usage ./fillit_checker.zsh (-v|-i) <1st_fillit_folder_or_exec> <2nd_fillit_folder_or_exec> [limit_numbers]
+Be aware! Folders, that you passed as parameters, must be valid fillit project folders and contains Makefile inside.
+Or you can pass regular ./fillit executables as a parameters, also you can combine folders and executables.
+-v:					launch main valid test
+-i:					launch incorrect test
+[limit_numbers]:	pair of numbers, that represent start(1st number) and end(2nd) size of the test maps. By default: start=1; end=12
+
+Example:			./fillit_checker.zsh -v ../my_fillit etalon_fillit 1 12
+```
 
 NOTE: all test maps with your fillit's output(.err files for 2nd file descriptor and .out for 1st) placed with ❤️ in .fillit_tests folder"
 
